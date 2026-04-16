@@ -2,15 +2,79 @@
 
 {% block content %}
 
-<h2>{{ product.name }}</h2>
+<div class="card shadow p-4">
 
-<img src="{{ product.image.url }}" width="400">
+    <h2 class="mb-3">{{ product.name }}</h2>
 
-<p>{{ product.description }}</p>
-<p><strong>{{ product.price }} $</strong></p>
+    <img src="{{ product.image.url }}" width="400" class="rounded mb-3">
 
-<br>
+    <p>{{ product.description|linebreaks }}</p>
 
-<button class="btn btn-success">Sotib olish</button>
+    <h4 class="text-success">{{ product.price }} $</h4>
+
+    <hr>
+
+
+    <div class="mb-3">
+
+        <!-- LIKE -->
+        <a href="{% url 'like_product' product.id %}" class="btn btn-outline-danger me-2">
+            {% if is_liked %}
+                 Liked
+            {% else %}
+                 Like
+            {% endif %}
+        </a>
+
+     \
+        <span class="badge bg-danger">
+            {{ likes_count }}
+        </span>
+
+    
+        <a href="{% url 'save_product' product.id %}" class="btn btn-outline-warning ms-3">
+            {% if is_saved %}
+                ⭐ Saved
+            {% else %}
+                ☆ Save
+            {% endif %}
+        </a>
+
+    </div>
+
+    <hr>
+
+   
+    <h4>Comments</h4>
+
+    <div class="mb-3" id="comments">
+
+        {% for c in comments %}
+            <div class="border rounded p-2 mb-2 bg-light">
+                <b>{{ c.user.username }}</b>: {{ c.text }}
+            </div>
+        {% empty %}
+            <p class="text-muted">Hozircha comment yo‘q</p>
+        {% endfor %}
+
+    </div>
+
+    <form method="POST" action="{% url 'add_comment' product.id %}#comments">
+        {% csrf_token %}
+
+        <div class="input-group">
+            <input type="text" name="text" class="form-control" placeholder="Comment yozing..." required>
+            <button class="btn btn-primary">Yuborish</button>
+        </div>
+    </form>
+
+    <hr>
+
+
+    <button class="btn btn-success w-100">
+        Sotib olish
+    </button>
+
+</div>
 
 {% endblock %}
