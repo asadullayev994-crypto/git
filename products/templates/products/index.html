@@ -6,32 +6,36 @@
 
 <div class="row">
 
-{% for product in products %}
-    <div class="col-md-4">
-        <div class="card mb-4 shadow">
+    {% for product in products %}
+        <div class="col-md-4">
 
-            <!-- RASM -->
-            {% if product.image %}
-                <img src="{{ product.image.url }}" class="card-img-top" style="height:250px; object-fit:cover;">
-            {% else %}
-                <img src="https://via.placeholder.com/300" class="card-img-top">
-            {% endif %}
+            <div class="card mb-4 shadow">
 
-            <div class="card-body text-center">
-                <h5 class="card-title">{{ product.name }}</h5>
-                <p class="text-muted">{{ product.price }} $</p>
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top" style="height:250px; object-fit:cover;">
+                {% else %}
+                    <img src="https://via.placeholder.com/300" class="card-img-top">
+                {% endif %}
 
-                <!-- BATAFSIL BUTTON -->
-                <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">
-                    Batafsil
-                </a>
+                <div class="card-body text-center">
+
+                    <h5 class="card-title">{{ product.name }}</h5>
+
+                    <p class="text-muted">{{ product.price }} $</p>
+
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary w-100">
+                        Batafsil
+                    </a>
+
+                </div>
+
             </div>
 
         </div>
-    </div>
-{% empty %}
-    <p>Product yo‘q ❌</p>
-{% endfor %}
+
+    {% empty %}
+        <p class="text-center">Product yo‘q ❌</p>
+    {% endfor %}
 
 </div>
 

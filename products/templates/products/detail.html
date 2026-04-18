@@ -4,50 +4,66 @@
 
 <div class="card shadow p-4">
 
-    <h2 class="mb-3">{{ product.name }}</h2>
+    <div class="row">
 
-    <img src="{{ product.image.url }}" width="400" class="rounded mb-3">
+   
+        <div class="col-md-5">
 
-    <p>{{ product.description|linebreaks }}</p>
-
-    <h4 class="text-success">{{ product.price }} $</h4>
-
-    <hr>
-
-
-    <div class="mb-3">
-
-        <!-- LIKE -->
-        <a href="{% url 'like_product' product.id %}" class="btn btn-outline-danger me-2">
-            {% if is_liked %}
-                 Liked
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded">
             {% else %}
-                 Like
+                <img src="https://via.placeholder.com/400" class="img-fluid rounded">
             {% endif %}
-        </a>
 
-     \
-        <span class="badge bg-danger">
-            {{ likes_count }}
-        </span>
+        </div>
 
-    
-        <a href="{% url 'save_product' product.id %}" class="btn btn-outline-warning ms-3">
-            {% if is_saved %}
-                ⭐ Saved
-            {% else %}
-                ☆ Save
-            {% endif %}
-        </a>
+  
+        <div class="col-md-7">
+
+            <h2>{{ product.name }}</h2>
+
+            <p class="text-muted">{{ product.description|linebreaks }}</p>
+
+            <h4 class="text-success">{{ product.price }} $</h4>
+
+            <hr>
+
+            <!-- LIKE + SAVE -->
+            <div class="mb-3">
+
+                <a href="{% url 'like_product' product.id %}" class="btn btn-outline-danger me-2">
+                    ❤️ Like
+                </a>
+
+                <span class="badge bg-danger">{{ likes_count }}</span>
+
+                <a href="{% url 'save_product' product.id %}" class="btn btn-outline-warning ms-3">
+                    ⭐ Save
+                </a>
+
+            </div>
+
+            <form method="POST" action="{% url 'order' product.id %}">
+                {% csrf_token %}
+
+                <input type="text" name="promo" class="form-control mb-3" placeholder="Promo code (ixtiyoriy)">
+
+                <button type="submit" class="btn btn-success w-100">
+                    🛒 Sotib olish
+                </button>
+
+            </form>
+
+        </div>
 
     </div>
 
     <hr>
 
-   
+
     <h4>Comments</h4>
 
-    <div class="mb-3" id="comments">
+    <div id="comments">
 
         {% for c in comments %}
             <div class="border rounded p-2 mb-2 bg-light">
@@ -61,7 +77,6 @@
 
     <form method="POST" action="{% url 'add_comment' product.id %}#comments">
         {% csrf_token %}
-
         <div class="input-group">
             <input type="text" name="text" class="form-control" placeholder="Comment yozing..." required>
             <button class="btn btn-primary">Yuborish</button>
@@ -70,10 +85,9 @@
 
     <hr>
 
-
-    <button class="btn btn-success w-100">
-        Sotib olish
-    </button>
+    <a href="{% url 'index' %}" class="btn btn-secondary w-100">
+        ⬅ Orqaga qaytish
+    </a>
 
 </div>
 
